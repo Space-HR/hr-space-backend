@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import CustomUser, Recruiter, Skills, Achievements
+from .models import Achievements, CustomUser, Recruiter, Skills
 
 
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'full_name'
+    list_display = ('username', 'first_name', 'last_name', #'full_name'
                     'company', 'position', 'photo')
     list_filter = ('username',)
     search_fields = ('username', )
@@ -12,8 +12,8 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 
 class RecruiterAdmin(admin.ModelAdmin):
-    list_display = ('username', 'top10', 'finished_cases',
-                    'years_of_exp', 'achievements', 'about_me')
+    list_display = ('user', 'about_me', 'top10', 'finished_cases',
+                    'years_of_exp',)
     empty_value_display = '-пусто-'
 
 

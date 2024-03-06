@@ -2,9 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 
-from users.constants import (MAX_CHAR_LENGTH,
-                             MAX_ABOUT_ME_LENGTH,
-                             MAX_SKILL_LENGTH, MAX_ACHIEVEMENT_LENGTH)
+from users.constants import (MAX_ABOUT_ME_LENGTH, MAX_ACHIEVEMENT_LENGTH,
+                             MAX_CHAR_LENGTH, MAX_SKILL_LENGTH)
 
 
 class CustomUser(AbstractUser):
@@ -34,11 +33,7 @@ class CustomUser(AbstractUser):
         ordering = ['id']
 
     def __str__(self):
-        return f'{self.name} - {self.position}'
-
-    def get_full_name(self):
-        """ Функция возвращает имя и фамилию с пробелом между ними."""
-        return f"{self.first_name} {self.last_name}"
+        return self.username
 
 
 class Skills(models.Model):
@@ -51,10 +46,13 @@ class Skills(models.Model):
         verbose_name_plural = "Навыки"
         default_related_name = 'skills'
 
+    def __str__(self):
+        return self.skill
+
 
 class Recruiter(models.Model):
     """Рекрутер"""
-    user = models.ForeignKey(
+    user = models.ForeignKey(  # добавить валидацию (не создавать больше 1)
         CustomUser,
         on_delete=models.CASCADE,
         related_name='recruiter',
@@ -74,7 +72,7 @@ class Recruiter(models.Model):
         verbose_name_plural = 'Рекрутеры'
 
     def __str__(self):
-        return self.user
+        return self.about_me
 
 
 class Achievements(models.Model):
