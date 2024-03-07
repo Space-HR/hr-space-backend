@@ -7,9 +7,8 @@ from rest_framework.response import Response
 
 from users.models import Achievements, CustomUser, Recruiter, Skills
 
-from .serializers import (CustomUserSerializer, RecruiterSerializer,
-                          AchievementsSerializer,
-                          SkillsSerializer)
+from .serializers import (AchievementsSerializer, CustomUserSerializer,
+                          RecruiterSerializer, SkillsSerializer)
 
 
 class CustomUserViewSet(UserViewSet):
