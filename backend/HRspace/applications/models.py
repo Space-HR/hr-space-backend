@@ -1,6 +1,6 @@
-from django.db import models
+# from django.db import models
 
 
-class Сandidate(models.Model):
-    """Соискатель."""
-    cv = models.FileField(upload_to="uploads/")
+# class Сandidate(models.Model):
+#     """Соискатель."""
+#     cv = models.FileField(upload_to="uploads/")
