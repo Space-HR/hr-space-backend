@@ -2,7 +2,7 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
-from users.models import Achievements, CustomUser, Recruiter, Skills
+from users.models import CustomUser, Recruiter
 
 
 class CustomUserSerializer(UserSerializer):
@@ -32,7 +32,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'username', 'first_name',
-                  'last_name', 'company', 'position', 'photo',
+                  'last_name', 'photo',
                   'password')
 
 
@@ -46,18 +46,18 @@ class RecruiterSerializer(serializers.ModelSerializer):
         model = Recruiter
         read_only_fields = ('user',)
         fields = ('id', 'top10', 'finished_cases',  'user',
-                  'years_of_exp', 'skills', 'achievements', 'about_me')
+                  'years_of_exp', 'about_me')
 
 
-class AchievementsSerializer(serializers.ModelSerializer):
-    """Cериализатор для достижений."""
-    class Meta:
-        model = Achievements
-        fields = '__all__'
-
-
-class SkillsSerializer(serializers.ModelSerializer):
-    """Cериализатор для навыков."""
-    class Meta:
-        model = Skills
-        fields = '__all__'
+# class AchievementsSerializer(serializers.ModelSerializer):
+#     """Cериализатор для достижений."""
+#     class Meta:
+#         model = Achievements
+#         fields = '__all__'
+#
+#
+# class SkillsSerializer(serializers.ModelSerializer):
+#     """Cериализатор для навыков."""
+#     class Meta:
+#         model = Skills
+#         fields = '__all__'

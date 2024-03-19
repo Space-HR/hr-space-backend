@@ -2,15 +2,22 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 
-from .constants import (MAX_ABOUT_ME_LENGTH, MAX_ACHIEVEMENT_LENGTH,
-                        MAX_CHAR_LENGTH, MAX_SKILL_LENGTH)
+from .constants import (MAX_ABOUT_ME_LENGTH, MAX_CHAR_LENGTH)
 
 
 class CustomUser(AbstractUser):
     """Модель пользователя."""
+    EMPLOYER = 'employer'
+    RECRUITER = 'recruiter'
+    ADMIN = 'administrator'
+    ROLES = (
+        (EMPLOYER, 'employer'),
+        (RECRUITER, 'recruiter'),
+        (ADMIN, 'administrator'),
+    )
+
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['first_name', 'last_name',
-                       'company', 'position', ]
+    REQUIRED_FIELDS = ['first_name', 'last_name']
     username = models.CharField(
         max_length=MAX_CHAR_LENGTH,
         unique=True,
@@ -20,12 +27,12 @@ class CustomUser(AbstractUser):
             message='Неподходящий логин. "me" использовать запрещено.')]))
     first_name = models.CharField('Имя', max_length=MAX_CHAR_LENGTH)
     last_name = models.CharField('Фамилия', max_length=MAX_CHAR_LENGTH)
-    company = models.CharField('Компания', max_length=MAX_CHAR_LENGTH)
-    position = models.CharField('Должность', max_length=MAX_CHAR_LENGTH)
     password = models.CharField(max_length=MAX_CHAR_LENGTH,
                                 verbose_name='пароль', )
     photo = models.ImageField('Фото', upload_to='photo',
                               blank=True, null=True, )
+    role = models.CharField(max_length=16, choices=ROLES, default=EMPLOYER)
+    created_at = models.DateTimeField(verbose_name='Дата публикации', auto_now_add=True)
 
     class Meta:
         verbose_name = 'Пользователь',

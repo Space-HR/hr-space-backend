@@ -333,7 +333,6 @@ class Bid(models.Model):
         ],
         verbose_name='Количество сотрудников',
     )
-
     payment_for_employee = models.PositiveIntegerField(
         verbose_name='Вознаграждение за сотрудника',
         default=0
@@ -344,7 +343,6 @@ class Bid(models.Model):
         related_name='bids',
         verbose_name='ID тарифа',
     )
-
     qty_recruiters = models.PositiveSmallIntegerField(
         verbose_name='Допустипое количество рекрутеров',
         default=1
@@ -352,7 +350,6 @@ class Bid(models.Model):
     employee_will_go_to_work_at = models.DateTimeField(
         verbose_name='Желаемая дата выхода сотрудника',
     )
-
     recruiter_tasks = models.ManyToManyField(
         RecruiterTask,
         through='BidRecruiterTask',
@@ -374,7 +371,6 @@ class Bid(models.Model):
     stop_list = models.TextField(
         verbose_name='Стоп-лист сотрудников',
     )
-
     created_at = models.DateTimeField(
         verbose_name='Дата публикации',
         auto_now_add=True

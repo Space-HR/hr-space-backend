@@ -5,10 +5,9 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from users.models import Achievements, CustomUser, Recruiter, Skills
+from users.models import CustomUser, Recruiter
 
-from .serializers import (AchievementsSerializer, CustomUserSerializer,
-                          RecruiterSerializer, SkillsSerializer)
+from .serializers import (CustomUserSerializer, RecruiterSerializer)
 
 
 class CustomUserViewSet(UserViewSet):
@@ -43,20 +42,20 @@ class RecruiterViewSet(viewsets.ModelViewSet):
         serializer.save(user=user)
 
 
-class SkillsViewSet(viewsets.ModelViewSet):
-    """Вьюсет для навыков."""
+# class SkillsViewSet(viewsets.ModelViewSet):
+#     """Вьюсет для навыков."""
+#
+#     queryset = Skills.objects.all()
+#     serializer_class = SkillsSerializer
+#     permission_classes = (AllowAny,)
 
-    queryset = Skills.objects.all()
-    serializer_class = SkillsSerializer
-    permission_classes = (AllowAny,)
 
-
-class AchievementsViewSet(viewsets.ModelViewSet):
-    """Вьюсет для достижений."""
-    serializer_class = AchievementsSerializer
-    queryset = Achievements.objects.all()
-    http_method_names = ['get', 'post',]
-
-    def perform_create(self, serializer):
-        recruiter = get_object_or_404(Recruiter, id=self.kwargs.get('user_id'))
-        serializer.save(recruiter=recruiter)
+# class AchievementsViewSet(viewsets.ModelViewSet):
+#     """Вьюсет для достижений."""
+#     serializer_class = AchievementsSerializer
+#     queryset = Achievements.objects.all()
+#     http_method_names = ['get', 'post',]
+#
+#     def perform_create(self, serializer):
+#         recruiter = get_object_or_404(Recruiter, id=self.kwargs.get('user_id'))
+#         serializer.save(recruiter=recruiter)
