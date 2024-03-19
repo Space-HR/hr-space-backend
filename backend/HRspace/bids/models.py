@@ -152,8 +152,13 @@ class EmployeeAddSkill(models.Model):
 
 class TariffOption(models.Model):
     """Модель тарифа."""
+    DAY = 'day'
+    MONTH = 'month'
+    YEAR = 'year'
     UNIT = (
-
+        (DAY, 'day'),
+        (MONTH, 'month'),
+        (YEAR, 'year'),
     )
 
     name = models.CharField('Название тарифа', max_length=150)
@@ -164,7 +169,7 @@ class TariffOption(models.Model):
         verbose_name='Процент оплаты после гарантийного периода'
     )
     guarantee_period = models.PositiveSmallIntegerField()
-    units_of_measurement_warranty_period = models.CharField(max_length=16, choices=UNIT, default='')
+    units_of_measurement_warranty_period = models.CharField(max_length=16, choices=UNIT, default=DAY)
 
     class Meta:
         verbose_name = 'Тариф'
@@ -632,7 +637,12 @@ class RecruiterToBidAddedResume(models.Model):
         on_delete=CASCADE,
         verbose_name='ID связи заявки и рекрутера',
     )
-    file = models.FileField(upload_to='')
+    file = models.FileField(
+        upload_to='uploads/resumes/',
+        blank=False,
+        help_text='Загрузите резюме',
+        verbose_name='Файл с резюме',
+    )
     comment = models.TextField(
         blank=True,
         verbose_name='Комментарий к резюме'
@@ -646,4 +656,3 @@ class RecruiterToBidAddedResume(models.Model):
 
     def __str__(self):
         return f'резюме к {self.recruiter_to_bid}'
-
