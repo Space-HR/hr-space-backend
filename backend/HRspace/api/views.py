@@ -1,13 +1,13 @@
-from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from users.models import CustomUser, Recruiter
+from users.models import CustomUser, Employer, Recruiter
 
-from .serializers import (CustomUserSerializer, RecruiterSerializer)
+from .serializers import (CustomUserSerializer, EmployerSerializer,
+                          RecruiterSerializer)
 
 
 class CustomUserViewSet(UserViewSet):
@@ -37,25 +37,10 @@ class RecruiterViewSet(viewsets.ModelViewSet):
     serializer_class = RecruiterSerializer
     http_method_names = ['get', 'post',]
 
-    def perform_create(self, serializer):
-        user = get_object_or_404(CustomUser, id=self.kwargs.get('user_id'))
-        serializer.save(user=user)
 
-
-# class SkillsViewSet(viewsets.ModelViewSet):
-#     """Вьюсет для навыков."""
-#
-#     queryset = Skills.objects.all()
-#     serializer_class = SkillsSerializer
-#     permission_classes = (AllowAny,)
-
-
-# class AchievementsViewSet(viewsets.ModelViewSet):
-#     """Вьюсет для достижений."""
-#     serializer_class = AchievementsSerializer
-#     queryset = Achievements.objects.all()
-#     http_method_names = ['get', 'post',]
-#
-#     def perform_create(self, serializer):
-#         recruiter = get_object_or_404(Recruiter, id=self.kwargs.get('user_id'))
-#         serializer.save(recruiter=recruiter)
+class EmployerViewSet(viewsets.ModelViewSet):
+    """Рекрутеры."""
+    queryset = Employer.objects.all()
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = EmployerSerializer
+    http_method_names = ['get', 'post',]
