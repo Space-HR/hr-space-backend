@@ -1,14 +1,38 @@
-from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.filters import OrderingFilter, SearchFilter
 
-from users.models import Achievements, CustomUser, Recruiter, Skills
+from users.models import CustomUser, Employer, Recruiter
+from bids.models import (JobVacancy, Sphere, City, ScheduleOption, WorkFormat,
+                     RegisterAsOption, Country, EmployeeCategory,
+                     ExperienceOption,
+                     EducationsOption, EmployeeSkill, EmployeeAddSkill,
+                     TariffOption, Bid, RecruiterToBid,
+                     RecruiterToBidAddedResume,
+                    #  BidWorkFormat, BidRegisterAs,  # &
+                    #  BidCountry, BidEmployeeCategory, BidEmployeeSkill,
+                    #  BidEmployeeAddSkill, BidRecruiterTask,
+                     )
 
-from .serializers import (AchievementsSerializer, CustomUserSerializer,
-                          RecruiterSerializer, SkillsSerializer)
+
+from .serializers import (CustomUserSerializer, EmployerSerializer,
+                          RecruiterSerializer, JobVacancySerializer,
+                          SphereSerializer, CitySerializer, ScheduleOptionSerializer,
+                          WorkFormatSerializer)
+
+from bids.models import (JobVacancy, Sphere, City, ScheduleOption, WorkFormat,
+                     RegisterAsOption, Country, EmployeeCategory,
+                     ExperienceOption,
+                     EducationsOption, EmployeeSkill, EmployeeAddSkill,
+                     TariffOption, Bid, RecruiterToBid,
+                     RecruiterToBidAddedResume,
+                    #  BidWorkFormat, BidRegisterAs,  # &
+                    #  BidCountry, BidEmployeeCategory, BidEmployeeSkill,
+                    #  BidEmployeeAddSkill, BidRecruiterTask,
+                     )
 
 
 class CustomUserViewSet(UserViewSet):
@@ -38,25 +62,65 @@ class RecruiterViewSet(viewsets.ModelViewSet):
     serializer_class = RecruiterSerializer
     http_method_names = ['get', 'post',]
 
-    def perform_create(self, serializer):
-        user = get_object_or_404(CustomUser, id=self.kwargs.get('user_id'))
-        serializer.save(user=user)
 
-
-class SkillsViewSet(viewsets.ModelViewSet):
-    """Вьюсет для навыков."""
-
-    queryset = Skills.objects.all()
-    serializer_class = SkillsSerializer
-    permission_classes = (AllowAny,)
-
-
-class AchievementsViewSet(viewsets.ModelViewSet):
-    """Вьюсет для достижений."""
-    serializer_class = AchievementsSerializer
-    queryset = Achievements.objects.all()
+class EmployerViewSet(viewsets.ModelViewSet):
+    """Рекрутеры."""
+    queryset = Employer.objects.all()
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = EmployerSerializer
     http_method_names = ['get', 'post',]
 
-    def perform_create(self, serializer):
-        recruiter = get_object_or_404(Recruiter, id=self.kwargs.get('user_id'))
-        serializer.save(recruiter=recruiter)
+
+class JobVacancyViewSet(viewsets.ModelViewSet):
+    """Должность."""
+    queryset = JobVacancy.objects.all()
+    serializer_class = JobVacancySerializer
+    permission_classes = (AllowAny,)
+    http_method_names = ['get',]
+    filter_backends = (SearchFilter, OrderingFilter)  # ищет по точному совпадению, не по части слова
+    search_fields = ('^name',)
+    ordering_fields = ('name', 'id',)
+
+
+class SphereViewSet(viewsets.ModelViewSet):
+    """Сфера деятельности."""
+    queryset = Sphere.objects.all()
+    serializer_class = SphereSerializer
+    permission_classes = (AllowAny,)
+    http_method_names = ['get',]
+    filter_backends = (SearchFilter, OrderingFilter) 
+    search_fields = ('^name',)
+    ordering_fields = ('name', 'id',)
+
+
+class CityViewSet(viewsets.ModelViewSet):
+    """Города."""
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+    permission_classes = (AllowAny,)
+    http_method_names = ['get',]
+    filter_backends = (SearchFilter, OrderingFilter) 
+    search_fields = ('^name',)
+    ordering_fields = ('name', 'id',)
+
+
+class ScheduleOptionViewSet(viewsets.ModelViewSet):
+    """Виды графиков."""
+    queryset = ScheduleOption.objects.all()
+    serializer_class = ScheduleOptionSerializer
+    permission_classes = (AllowAny,)
+    http_method_names = ['get',]
+    filter_backends = (SearchFilter, OrderingFilter) 
+    search_fields = ('^name',)
+    ordering_fields = ('name', 'id',)
+
+
+class WorkFormatViewSet(viewsets.ModelViewSet):
+    """Формат работы."""
+    queryset = WorkFormat.objects.all()
+    serializer_class = WorkFormatSerializer
+    permission_classes = (AllowAny,)
+    http_method_names = ['get',]
+    filter_backends = (SearchFilter, OrderingFilter) 
+    search_fields = ('^name',)
+    ordering_fields = ('name', 'id',)
