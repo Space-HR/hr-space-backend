@@ -17,5 +17,5 @@ HRSpace - маркетплейс частных рекрутеров и кадр
 ## Авторы:  
 
 [Анастасия Богданова](https://github.com/Anastasia289/)   
+[Елена Василькова](https://github.com/ElenaVasilkova)
 Елена 
-Елена Василькова
