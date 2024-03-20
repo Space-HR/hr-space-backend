@@ -2,7 +2,8 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.deletion import CASCADE
-from users.models import (Employer, Recruiter)
+
+from users.models import Employer, Recruiter
 
 User = get_user_model()
 
@@ -256,14 +257,14 @@ class Bid(models.Model):
         max_length=200,
         verbose_name='Комментарий к графику работы',
     )
-    work_formats = models.ManyToManyField(  #Если поле обязательное, то надо определить default
+    work_formats = models.ManyToManyField(  # Если поле обязательное, то надо определить default
         WorkFormat,
         through='BidWorkFormat',
         through_fields=('bid', 'work_format'),
         blank=False,
         verbose_name='Форматы работы',
     )
-    register_as_set = models.ManyToManyField( #Если поле обязательное, то надо определить default
+    register_as_set = models.ManyToManyField( # Если поле обязательное, то надо определить default
         RegisterAsOption,
         through='BidRegisterAs',
         through_fields=('bid', 'register_as'),
@@ -350,13 +351,13 @@ class Bid(models.Model):
     employee_will_go_to_work_at = models.DateTimeField(
         verbose_name='Желаемая дата выхода сотрудника',
     )
-    recruiter_tasks = models.ManyToManyField(
-        RecruiterTask,
-        through='BidRecruiterTask',
-        through_fields=('bid', 'recruiter_task'),
-        blank=False,
-        verbose_name='Задачи рекрутера',
-    )
+    # recruiter_tasks = models.ManyToManyField(
+    #     RecruiterTask,
+    #     through='BidRecruiterTask',
+    #     through_fields=('bid', 'recruiter_task'),
+    #     blank=False,
+    #     verbose_name='Задачи рекрутера',
+    # )
     resume_after_interview = models.BooleanField(
         default=False,
         verbose_name='Предоставлять резюме после собеседования с соискателем'
@@ -549,32 +550,32 @@ class BidEmployeeAddSkill(models.Model):
         return f'заявка {self.bid} -> {self.employee_add_skill}'
 
 
-class BidRecruiterTask(models.Model):
-    """Модель связи заявки и задачи рекрутера."""
+# class BidRecruiterTask(models.Model):
+#     """Модель связи заявки и задачи рекрутера."""
 
-    bid = models.ForeignKey(
-        Bid,
-        on_delete=CASCADE,
-        verbose_name='ID заявки',
-    )
-    recruiter_task = models.ForeignKey(
-        EmployeeAddSkill,
-        on_delete=CASCADE,
-        verbose_name='ID задачи рекрутера',
-    )
+#     bid = models.ForeignKey(
+#         Bid,
+#         on_delete=CASCADE,
+#         verbose_name='ID заявки',
+#     )
+#     recruiter_task = models.ForeignKey(
+#         EmployeeAddSkill,
+#         on_delete=CASCADE,
+#         verbose_name='ID задачи рекрутера',
+#     )
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['bid', 'recruiter_task'],
-                name='bid_recruiter_task'
-            )
-        ]
-        verbose_name = 'Связь заявки и задачи рекрутера'
-        verbose_name_plural = 'Связи заявки и задачи рекрутера'
+#     class Meta:
+#         constraints = [
+#             models.UniqueConstraint(
+#                 fields=['bid', 'recruiter_task'],
+#                 name='bid_recruiter_task'
+#             )
+#         ]
+#         verbose_name = 'Связь заявки и задачи рекрутера'
+#         verbose_name_plural = 'Связи заявки и задачи рекрутера'
 
-    def __str__(self):
-        return f'заявка {self.bid} -> {self.recruiter_task}'
+#     def __str__(self):
+#         return f'заявка {self.bid} -> {self.recruiter_task}'
 
 
 class RecruiterToBid(models.Model):

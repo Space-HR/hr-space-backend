@@ -2,7 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 
-from .constants import (MAX_ABOUT_ME_LENGTH, MAX_CHAR_LENGTH)
+from .constants import (MAX_ABOUT_ME_LENGTH, MAX_CHAR_LENGTH,
+                        MAX_COMPANY_LENGTH, MAX_POSITION_LENGTH)
 
 
 class CustomUser(AbstractUser):
@@ -32,7 +33,8 @@ class CustomUser(AbstractUser):
     photo = models.ImageField('Фото', upload_to='photo',
                               blank=True, null=True, )
     role = models.CharField(max_length=16, choices=ROLES, default=EMPLOYER)
-    created_at = models.DateTimeField(verbose_name='Дата публикации', auto_now_add=True)
+    created_at = models.DateTimeField(verbose_name='Дата публикации',
+                                      auto_now_add=True)
 
     class Meta:
         verbose_name = 'Пользователь',
@@ -41,20 +43,6 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-
-
-# class Skills(models.Model):
-#     """Избранное"""
-#
-#     skill = models.CharField('Навык', max_length=MAX_SKILL_LENGTH)
-#
-#     class Meta:
-#         verbose_name = "Навык"
-#         verbose_name_plural = "Навыки"
-#         default_related_name = 'skills'
-#
-#     def __str__(self):
-#         return self.skill
 
 
 class Recruiter(models.Model):
@@ -79,37 +67,20 @@ class Recruiter(models.Model):
 
 
 class Employer(models.Model):
-    """Работаодатель"""
+    """Работодатель"""
     user = models.OneToOneField(
         CustomUser,
         on_delete=models.CASCADE,
         related_name='employer',
         verbose_name='работодатель', )
-    company = models.CharField('Компания', max_length=250)
-    position = models.CharField('Должность', max_length=150)
+    company = models.CharField('Компания',
+                               max_length=MAX_COMPANY_LENGTH)
+    position = models.CharField('Должность',
+                                max_length=MAX_POSITION_LENGTH)
 
     class Meta:
-        verbose_name = 'Работаодатель'
-        verbose_name_plural = 'Работаодатели'
+        verbose_name = 'Работодатель'
+        verbose_name_plural = 'Работодатели'
 
     def __str__(self):
         return self.company
-
-
-# class Achievements(models.Model):
-#     """Достижения."""
-#
-#     recruiter = models.ForeignKey(
-#         Recruiter,
-#         on_delete=models.CASCADE,
-#     )
-#     achievement = models.CharField('Достижение',
-#                                    max_length=MAX_ACHIEVEMENT_LENGTH)
-#
-#     class Meta:
-#         verbose_name = "Достижение"
-#         verbose_name_plural = "Достижения"
-#         default_related_name = 'achievements'
-#
-#     def __str__(self):
-#         return self.achievement
