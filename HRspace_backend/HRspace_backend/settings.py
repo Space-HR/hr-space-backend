@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'HRspace.urls'
+ROOT_URLCONF = 'HRspace_backend.urls'
 
 TEMPLATES = [
     {
@@ -66,7 +66,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'HRspace.wsgi.application'
+WSGI_APPLICATION = 'HRspace_backend.wsgi.application'
 
 
 DATABASES_POSTGRES = {
