@@ -120,7 +120,6 @@ class BidGetSerializer(serializers.ModelSerializer):
                   'recruiter_tasks', 'resume_after_interview',
                   'not_private_person', 'skills_recruiter', 'stop_list',
                   'created_at', 'closed_at', 'status',
-                  'recruiter',
                   )
 
 

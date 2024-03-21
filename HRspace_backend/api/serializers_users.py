@@ -22,12 +22,13 @@ class CustomUserSerializer(UserSerializer):
 
 class CustomUserCreateSerializer(UserCreateSerializer):
     """Сериализатор для создания пользователя."""
+    photo = Base64ImageField()
 
     class Meta:
         model = CustomUser
         fields = ('id', 'username', 'first_name',
-                  'last_name', 'photo',
-                  'password')
+                  'last_name', 'photo', 'role',
+                  'password', 'photo',)
 
 
 class RecruiterGetSerializer(serializers.ModelSerializer):

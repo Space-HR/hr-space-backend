@@ -6,7 +6,9 @@ from rest_framework.response import Response
 
 from users.models import CustomUser, Employer, Recruiter
 
-from .serializers_users import (CustomUserSerializer, EmployerSerializer,
+from .serializers_users import (CustomUserSerializer, 
+                                CustomUserCreateSerializer,
+                                EmployerSerializer,
                                 RecruiterGetSerializer, RecruiterSerializer)
 
 
@@ -16,7 +18,12 @@ class CustomUserViewSet(UserViewSet):
     queryset = CustomUser.objects.all()
     permission_classes = [IsAuthenticated, ]
     serializer_class = CustomUserSerializer
-    http_method_names = ['get',]
+    http_method_names = ['get', 'post']
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return CustomUserSerializer
+        return CustomUserCreateSerializer
 
     @action(
         detail=False,
