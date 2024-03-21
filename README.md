@@ -5,6 +5,8 @@ HRSpace - маркетплейс частных рекрутеров и кадр
 
 Проект состоит из бэкенд-приложения на Django и фронтенд-приложения на React.
 
+[Схема базы данных](https://dbdiagram.io/d/HRspase-65ef0862b1f3d4062ca0f7fc) 
+
 ## Возможности проета:
 
 ## Запуск:
@@ -18,4 +20,4 @@ HRSpace - маркетплейс частных рекрутеров и кадр
 
 [Анастасия Богданова](https://github.com/Anastasia289/)   
 [Елена Василькова](https://github.com/ElenaVasilkova)
-Елена 
+[Елена Юнникова](https://github.com/Edelveisx)
