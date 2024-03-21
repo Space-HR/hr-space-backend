@@ -43,7 +43,7 @@ class RecruiterViewSet(viewsets.ModelViewSet):
 
 
 class EmployerViewSet(viewsets.ModelViewSet):
-    """Рекрутеры."""
+    """Работодатели."""
     queryset = Employer.objects.all()
     permission_classes = [IsAuthenticated, ]
     serializer_class = EmployerSerializer

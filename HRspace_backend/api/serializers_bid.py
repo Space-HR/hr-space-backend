@@ -27,7 +27,6 @@ from .serializers_users import \
 #                         )
 # User = get_user_model()
 
-
 class BidRegisterAsSerializer(serializers.ModelSerializer):
     """Сериализатор для добавления способов оформления в заявку."""
 
@@ -120,7 +119,7 @@ class BidGetSerializer(serializers.ModelSerializer):
                   'expected_first_cv_date',
                   'recruiter_tasks', 'resume_after_interview',
                   'not_private_person', 'skills_recruiter', 'stop_list',
-                  'created_at', 'closed_at', 'status', 
+                  'created_at', 'closed_at', 'status',
                   'recruiter',
                   )
 

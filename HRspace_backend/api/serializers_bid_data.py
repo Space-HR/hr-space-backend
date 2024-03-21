@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from bids.models import (BidRegisterAs, City, Country, EducationsOption,
+from bids.models import (City, Country, EducationsOption,
                          EmployeeAddSkill, EmployeeCategory, EmployeeSkill,
                          ExperienceOption, JobVacancy, RecruiterTask,
                          RegisterAsOption, ScheduleOption, Sphere,
@@ -106,11 +106,3 @@ class RecruiterTaskSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('id', 'name')
         model = RecruiterTask
-
-
-class BidRegisterAsSerializer(serializers.ModelSerializer):
-    """Сериализатор для добавления способов оформления в заявку."""
-
-    class Meta:
-        model = BidRegisterAs
-        fields = ('id', 'bid', 'register_as')

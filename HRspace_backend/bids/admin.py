@@ -1,12 +1,15 @@
 from django.contrib import admin
 
-from .models import (Bid, BidCountry, BidEmployeeAddSkill, BidEmployeeCategory,
-                     BidEmployeeSkill, BidRecruiterTask, BidRegisterAs, City,
+from .models import (Bid, City,
                      Country, EducationsOption, EmployeeAddSkill,
                      EmployeeCategory, EmployeeSkill, ExperienceOption,
-                     JobVacancy, RecruiterTask, RecruiterToBid,
-                     RecruiterToBidAddedResume, RegisterAsOption,
-                     ScheduleOption, Sphere, TariffOption, WorkFormat)
+                     JobVacancy, RecruiterTask, RegisterAsOption,
+                     ScheduleOption, Sphere, TariffOption, WorkFormat,
+                    #  RecruiterToBid,
+                    #  RecruiterToBidAddedResume,
+                    #  BidCountry, BidEmployeeAddSkill, BidEmployeeCategory,
+                    #  BidEmployeeSkill, BidRecruiterTask, BidRegisterAs,
+                     )
 
 
 class JobVacancyAdmin(admin.ModelAdmin):
@@ -47,11 +50,12 @@ admin.site.register(TariffOption, TariffOptionAdmin)
 admin.site.register(Country)
 admin.site.register(RecruiterTask)
 admin.site.register(Bid)
-admin.site.register(RecruiterToBid)
-admin.site.register(RecruiterToBidAddedResume)
-admin.site.register(BidRegisterAs)
-admin.site.register(BidCountry)
-admin.site.register(BidEmployeeCategory)
-admin.site.register(BidEmployeeSkill)
-admin.site.register(BidEmployeeAddSkill)
-admin.site.register(BidRecruiterTask)
+
+# admin.site.register(RecruiterToBid)
+# admin.site.register(RecruiterToBidAddedResume)
+# admin.site.register(BidRegisterAs)
+# admin.site.register(BidCountry)
+# admin.site.register(BidEmployeeCategory)
+# admin.site.register(BidEmployeeSkill)
+# admin.site.register(BidEmployeeAddSkill)
+# admin.site.register(BidRecruiterTask)
