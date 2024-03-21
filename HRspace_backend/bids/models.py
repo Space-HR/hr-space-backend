@@ -254,10 +254,11 @@ class Bid(models.Model):
         verbose_name='Комментарий к графику работы',
     )
 
-    work_format = models.ForeignKey(  # убрала множественность, у девочек в фигме только один вар.
+    work_formats = models.ManyToManyField(  # Если поле обязательное, то надо определить default
         WorkFormat,
-        on_delete=CASCADE,
-        related_name='bids',
+        through='BidWorkFormat',
+        through_fields=('bid', 'work_format'),
+        blank=False,
         verbose_name='Форматы работы',
     )
 
@@ -313,7 +314,7 @@ class Bid(models.Model):
         related_name='bids',
         verbose_name='ID требования к образованию',
     )
-    employee_skills = models.ManyToManyField(  # а вот и нет
+    employee_skills = models.ManyToManyField(
         EmployeeSkill,
         through='BidEmployeeSkill',
         through_fields=('bid', 'employee_skill'),
@@ -418,32 +419,32 @@ class BidRegisterAs(models.Model):
         return f'заявка {self.bid} -> {self.register_as}'
 
 
-# class BidWorkFormat(models.Model):  # не нужна, т.к. убрали множественность
-#     """Модель связи заявки и формата работы."""
+class BidWorkFormat(models.Model):
+    """Модель связи заявки и формата работы."""
 
-#     bid = models.ForeignKey(
-#         Bid,
-#         on_delete=CASCADE,
-#         verbose_name='ID заявки',
-#     )
-#     work_format = models.ForeignKey(
-#         WorkFormat,
-#         on_delete=CASCADE,
-#         verbose_name='ID формата работы',
-#     )
+    bid = models.ForeignKey(
+        Bid,
+        on_delete=CASCADE,
+        verbose_name='ID заявки',
+    )
+    work_format = models.ForeignKey(
+        WorkFormat,
+        on_delete=CASCADE,
+        verbose_name='ID формата работы',
+    )
 
-#     class Meta:
-#         constraints = [
-#             models.UniqueConstraint(
-#                 fields=['bid', 'work_format'],
-#                 name='bid_work_format'
-#             )
-#         ]
-#         verbose_name = 'Связь заявки и формата работы'
-#         verbose_name_plural = 'Связи заявки и формата работы'
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['bid', 'work_format'],
+                name='bid_work_format'
+            )
+        ]
+        verbose_name = 'Связь заявки и формата работы'
+        verbose_name_plural = 'Связи заявки и формата работы'
 
-#     def __str__(self):
-#         return f'заявка {self.bid} -> {self.work_format}'
+    def __str__(self):
+        return f'заявка {self.bid} -> {self.work_format}'
 
 
 class BidCountry(models.Model):

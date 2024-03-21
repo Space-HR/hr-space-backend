@@ -1,18 +1,16 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import (BidCountryViewSet, BidEmployeeAddSkillViewSet,
-                    BidEmployeeCategoryViewSet, BidEmployeeSkillViewSet,
-                    BidRecruiterTaskViewSet, BidRegisterAsViewSet, BidViewSet,
-                    CityViewSet, CountryViewSet, CustomUserViewSet,
-                    EducationsOptionViewSet, EmployeeAddSkillViewSet,
-                    EmployeeCategoryViewSet, EmployeeSkillViewSet,
-                    EmployerViewSet, ExperienceOptionViewSet,
-                    JobVacancyViewSet, RecruiterTaskViewSet,
-                    RecruiterToBidAddedResumeViewSet, RecruiterToBidViewSet,
-                    RecruiterViewSet, RegisterAsOptionViewSet,
-                    ScheduleOptionViewSet, SphereViewSet, TariffOptionViewSet,
-                    WorkFormatViewSet)
+from .views_bid import (BidViewSet, RecruiterToBidAddedResumeViewSet,
+                        RecruiterToBidViewSet)
+from .views_bid_data import (CityViewSet, CountryViewSet,
+                             EducationsOptionViewSet, EmployeeAddSkillViewSet,
+                             EmployeeCategoryViewSet, EmployeeSkillViewSet,
+                             ExperienceOptionViewSet, JobVacancyViewSet,
+                             RecruiterTaskViewSet, RegisterAsOptionViewSet,
+                             ScheduleOptionViewSet, SphereViewSet,
+                             TariffOptionViewSet, WorkFormatViewSet)
+from .views_users import CustomUserViewSet, EmployerViewSet, RecruiterViewSet
 
 app_name = "api"
 router_v1 = DefaultRouter()
@@ -50,27 +48,12 @@ router_v1.register('tariffoption', TariffOptionViewSet,
 
 # эндпоинты заявки
 router_v1.register('bid', BidViewSet, basename='bid')
-router_v1.register('bidregister', BidRegisterAsViewSet,
-                   basename='bidregister')
-router_v1.register('bidemployeecategory', BidEmployeeCategoryViewSet,
-                   basename='bidemployeecategory')
-router_v1.register('bidcountry', BidCountryViewSet,
-                   basename='bidcountry')
-router_v1.register('bidcountry', BidCountryViewSet,
-                   basename='bidcountry'),
-router_v1.register('bidemployeeskill', BidEmployeeSkillViewSet,
-                   basename='bidemployeeskill'),
-router_v1.register('bidemployeeaddskill', BidEmployeeAddSkillViewSet,
-                   basename='bidemployeeaddskill')
 router_v1.register(r'bid/(?P<bid_id>\d+)/recruitertobid',
                    RecruiterToBidViewSet,
                    basename='recruitertobid')
 router_v1.register(r'bid/(?P<bid_id>\d+)/recruitertobid/(?P<recruitertobid_id>\d+)/recruitertobidaddedresume',
                    RecruiterToBidAddedResumeViewSet,
                    basename='recruitertobidaddedresume')
-router_v1.register('bidrecruitertask',
-                   BidRecruiterTaskViewSet,
-                   basename='bidrecruitertask')
 
 
 urlpatterns = [
