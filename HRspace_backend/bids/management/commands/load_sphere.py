@@ -8,7 +8,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         self.import_cites()
-        print('Загрузка списка городов завершена.')
+        print('Загрузка списка сфер деятельности завершена.')
 
     def import_cites(self, file='sphere.csv'):
         print(f'Загрузка данных из {file}')
