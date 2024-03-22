@@ -164,6 +164,7 @@ class TariffOption(models.Model):
     )
 
     name = models.CharField('Название тарифа', max_length=150)
+    description = models.CharField('Описание тарифа', max_length=250)
     payment_for_employee_start_working = models.PositiveSmallIntegerField(
         verbose_name='Процент оплаты за выход сотрудника'
     )
