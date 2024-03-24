@@ -12,8 +12,10 @@ SECRET_KEY = os.getenv('SECRET_KEY', default=utils.get_random_secret_key())
 
 DEBUG = os.environ.get('DEBUG') == 'True'
 
-# SQLITE = False
-SQLITE = True
+SQLITE = False
+# SQLITE = True
+
+USE_TZ = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -78,11 +80,11 @@ WSGI_APPLICATION = 'HRspace_backend.wsgi.application'
 DATABASES_POSTGRES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'app'),
-        'USER': os.getenv('POSTGRES_USER', 'app'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', '!ChangeMe!'),
-        'HOST': os.getenv('DB_HOST', ''),
-        'PORT': os.getenv('DB_PORT', 5432)
+        'NAME': os.getenv('POSTGRES_DB', 'hr_app'),
+        'USER': os.getenv('POSTGRES_USER', 'hr_app'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'hr_pw'),
+        'HOST': os.getenv('POSTGRES_HOST', 'postgres'),
+        'PORT': os.getenv('POSTGRES_PORT', 5432)
     }
 }
 
