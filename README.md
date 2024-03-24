@@ -11,17 +11,10 @@ HRSpace - маркетплейс частных рекрутеров и кадр
 
 ## Запуск:
 
-#### Создание БД и загрузка данных:
+#### Загрузка словарей в базу данных:
 
 ```bash
-sudo docker compose exec -T backend python manage.py makemigrations users
-sudo docker compose exec -T backend python manage.py makemigrations bids
-sudo docker compose exec -T backend python manage.py migrate
-sudo docker compose exec -T backend python manage.py collectstatic --no-input
-sudo docker compose exec -T backend python manage.py load_ingredientsload_city
-sudo docker compose exec -T backend python manage.py load_country
-sudo docker compose exec -T backend python manage.py load_job_vacancy
-sudo docker compose exec -T backend python manage.py load_sphere
+docker exec docker_wrapper-django-1 python manage.py load_dict
 ```
 
 ## Технологии: 
