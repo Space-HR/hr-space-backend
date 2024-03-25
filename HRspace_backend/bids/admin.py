@@ -8,6 +8,11 @@ from .models import (Bid, City,
                      )
 
 
+class BidAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'employer', 'status',)
+    empty_value_display = '-пусто-'
+
+
 class JobVacancyAdmin(admin.ModelAdmin):
     list_display = ('id', 'name',)
     empty_value_display = '-пусто-'

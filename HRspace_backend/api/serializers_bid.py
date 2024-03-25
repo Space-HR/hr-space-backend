@@ -21,7 +21,7 @@ class RecruiterToBidAddedResumeSerializer(serializers.ModelSerializer):
         model = RecruiterToBidAddedResume
 
 
-class RecruiterToBidAddedResumeSerializer(serializers.ModelSerializer):
+class RecruiterToBidAddedResumeCreateSerializer(serializers.ModelSerializer):
     """Прикрепление рекрутера к заявке."""
 
     class Meta:
