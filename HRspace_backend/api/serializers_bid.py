@@ -86,7 +86,7 @@ class BidGetSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='name',
         many=True
-    ) 
+    )
     city = serializers.SlugRelatedField(
         read_only=True,
         slug_field='name'
