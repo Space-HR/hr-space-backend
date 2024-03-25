@@ -5,12 +5,19 @@ from .models import (Bid, City,
                      EmployeeCategory, EmployeeSkill, ExperienceOption,
                      JobVacancy, RecruiterTask, RegisterAsOption,
                      ScheduleOption, Sphere, TariffOption, WorkFormat,
+                     RecruiterToBid,
                      )
+
+
+class RecruiterInline(admin.TabularInline):
+    model = RecruiterToBid
+    extra = 1
 
 
 class BidAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'employer', 'status',)
     empty_value_display = '-пусто-'
+    inlines = [RecruiterInline, ]
 
 
 class JobVacancyAdmin(admin.ModelAdmin):

@@ -3,11 +3,9 @@ from rest_framework import serializers
 from bids.models import (
     RecruiterToBid, Bid,
     RecruiterToBidAddedResume,
-    EmployeeAddSkill,
     )
 
 from .serializers_users import RecruiterSerializer, EmployerSerializer
-from .serializers_bid_data import EmployeeAddSkillSerializer
 
 
 class RecruiterToBidAddedResumeSerializer(serializers.ModelSerializer):
@@ -21,13 +19,13 @@ class RecruiterToBidAddedResumeSerializer(serializers.ModelSerializer):
         model = RecruiterToBidAddedResume
 
 
-class RecruiterToBidAddedResumeCreateSerializer(serializers.ModelSerializer):
-    """Прикрепление рекрутера к заявке."""
+# class RecruiterToBidAddedResumeCreateSerializer(serializers.ModelSerializer):
+#     """Прикрепление рекрутера к заявке."""
 
-    class Meta:
-        fields = ('id', 'recruiter_to_bid',
-                  'file', 'comment', 'accepted_at', 'status',)
-        model = RecruiterToBidAddedResume
+#     class Meta:
+#         fields = ('id', 'recruiter_to_bid',
+#                   'file', 'comment', 'accepted_at', 'status',)
+#         model = RecruiterToBidAddedResume
 
 
 class RecruiterToBidSerializer(serializers.ModelSerializer):
