@@ -229,52 +229,52 @@ class Bid(models.Model):
         on_delete=CASCADE,
         related_name='bids',
         verbose_name='ID вакансии',
+        default=1
     )
     sphere = models.ForeignKey(
         Sphere,
         on_delete=CASCADE,
         related_name='bids',
         verbose_name='ID сферы деятельности',
+        default=1
     )
     min_salary = models.PositiveIntegerField(
         verbose_name='Минимальная зарплата',
-        blank=True
+        null=True, blank=True,
     )
     max_salary = models.PositiveIntegerField(
-        verbose_name='Минимальная зарплата',   # Добавить валидацию: min_salary < max_salary
-        default=0
+        verbose_name='Максимальная зарплата',   # Добавить валидацию: min_salary < max_salary
+        null=True, blank=True,
     )
     schedule = models.ForeignKey(
         ScheduleOption,
         on_delete=CASCADE,
         related_name='bids',
         verbose_name='ID опции графика работы',
+        null=True, blank=True,
     )
     schedule_comment = models.CharField(
         max_length=200,
         verbose_name='Комментарий к графику работы',
+        blank=True
     )
-
-    work_formats = models.ManyToManyField(  # Если поле обязательное, то надо определить default
+    work_formats = models.ManyToManyField(
         WorkFormat,
-        through='BidWorkFormat',
-        through_fields=('bid', 'work_format'),
-        blank=False,
+        related_name='bids',
+        blank=True,
         verbose_name='Форматы работы',
     )
-
     register_as_set = models.ManyToManyField(  # Если поле обязательное, то надо определить default
         RegisterAsOption,
-        through='BidRegisterAs',
-        through_fields=('bid', 'register_as'),
-        blank=False,
+        related_name='bids',
+        blank=True,
         verbose_name='Оформление сотрудника',
     )
-
     city = models.ForeignKey(
         City,
         on_delete=CASCADE,
         related_name='bids',
+        null=True, blank=True,
         verbose_name='ID города',
     )
     vhl = models.BooleanField(
@@ -287,15 +287,13 @@ class Bid(models.Model):
     )
     foreign_countries = models.ManyToManyField(
         Country,
-        through='BidCountry',
-        through_fields=('bid', 'country'),
+        related_name='bids',
         blank=True,
         verbose_name='Граждане каких стран принимаются на работу',
     )
     employee_categories = models.ManyToManyField(
         EmployeeCategory,
-        through='BidEmployeeCategory',
-        through_fields=('bid', 'employee_category'),
+        related_name='bids',
         blank=True,
         verbose_name='Дополнительные категории граждан',
     )
@@ -308,24 +306,24 @@ class Bid(models.Model):
         on_delete=CASCADE,
         related_name='bids',
         verbose_name='ID требования к опыту работы',
+        null=True, blank=True,
     )
     employee_education = models.ForeignKey(
         EducationsOption,
         on_delete=CASCADE,
         related_name='bids',
+        null=True, blank=True,
         verbose_name='ID требования к образованию',
     )
-    employee_skills = models.ManyToManyField(
+    employee_skills = models.ManyToManyField(  # то, что увидел в подсказках в поле требования
         EmployeeSkill,
-        through='BidEmployeeSkill',
-        through_fields=('bid', 'employee_skill'),
-        blank=False,
+        related_name='bids',
+        blank=True,
         verbose_name='Навыки',
     )
-    employee_add_skills = models.ManyToManyField(
+    employee_add_skills = models.ManyToManyField(  # то, что дописал руками в поле требования
         EmployeeAddSkill,
-        through='BidEmployeeAddSkill',
-        through_fields=('bid', 'employee_add_skill'),
+        related_name='bids',
         blank=True,
         verbose_name='Дополнительные навыки',
     )
@@ -339,6 +337,7 @@ class Bid(models.Model):
             MaxValueValidator(QTY_EMPLOYEES_MAX),
         ],
         verbose_name='Количество сотрудников',
+        default=1,
     )
     payment_for_employee = models.PositiveIntegerField(
         verbose_name='Вознаграждение за сотрудника',
@@ -349,23 +348,24 @@ class Bid(models.Model):
         on_delete=CASCADE,
         related_name='bids',
         verbose_name='ID тарифа',
+        default=1
     )
     qty_recruiters = models.PositiveSmallIntegerField(
         verbose_name='Допустипое количество рекрутеров',
         default=1
     )
-    employee_will_go_to_work_at = models.DateTimeField(
+    employee_will_go_to_work_at = models.DateField(
         verbose_name='Желаемая дата выхода сотрудника',
+        null=True, blank=True,
     )
-
-    expected_first_cv_date = models.DateTimeField(
+    expected_first_cv_date = models.DateField(
         verbose_name='Ожидаемая дата получения первых резюме',
+        null=True, blank=True,
     )
     recruiter_tasks = models.ManyToManyField(
         RecruiterTask,
-        through='BidRecruiterTask',
-        through_fields=('bid', 'recruiter_task'),
-        blank=False,
+        related_name='bids',
+        blank=True,
         verbose_name='Задачи рекрутера',
     )
     resume_after_interview = models.BooleanField(
@@ -378,214 +378,21 @@ class Bid(models.Model):
     )
     skills_recruiter = models.TextField(
         verbose_name='Требования (навыки) к рекрутеру',
+        blank=True,
     )
     stop_list = models.TextField(
         verbose_name='Стоп-лист сотрудников',
+        blank=True,
     )
     created_at = models.DateTimeField(
         verbose_name='Дата публикации',
         auto_now_add=True
     )
-    closed_at = models.DateTimeField(
+    closed_at = models.DateField(
         verbose_name='Дата закрытия',
+        null=True, blank=True,
     )
     status = models.CharField(max_length=16, choices=STATUS_BID, default=DRAFT)
-
-
-class BidRegisterAs(models.Model):
-    """Модель связи заявки и способа оформления сотрудника."""
-
-    bid = models.ForeignKey(
-        Bid,
-        on_delete=CASCADE,
-        verbose_name='ID заявки',
-    )
-    register_as = models.ForeignKey(
-        RegisterAsOption,
-        on_delete=CASCADE,
-        verbose_name='ID способа оформления сотрудника',
-    )
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['bid', 'register_as'],
-                name='bid_register_as'
-            )
-        ]
-        verbose_name = 'Связь заявки и способа оформления сотрудника'
-        verbose_name_plural = 'Связи заявки и способа оформления сотрудника'
-
-    def __str__(self):
-        return f'заявка {self.bid} -> {self.register_as}'
-
-
-class BidWorkFormat(models.Model):
-    """Модель связи заявки и формата работы."""
-
-    bid = models.ForeignKey(
-        Bid,
-        on_delete=CASCADE,
-        verbose_name='ID заявки',
-    )
-    work_format = models.ForeignKey(
-        WorkFormat,
-        on_delete=CASCADE,
-        verbose_name='ID формата работы',
-    )
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['bid', 'work_format'],
-                name='bid_work_format'
-            )
-        ]
-        verbose_name = 'Связь заявки и формата работы'
-        verbose_name_plural = 'Связи заявки и формата работы'
-
-    def __str__(self):
-        return f'заявка {self.bid} -> {self.work_format}'
-
-
-class BidCountry(models.Model):
-    """Модель связи заявки и разрешенной страны гражданства сотрудника."""
-
-    bid = models.ForeignKey(
-        Bid,
-        on_delete=CASCADE,
-        verbose_name='ID заявки',
-    )
-    country = models.ForeignKey(
-        Country,
-        on_delete=CASCADE,
-        verbose_name='ID страны',
-    )
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['bid', 'country'],
-                name='bid_country'
-            )
-        ]
-        verbose_name = 'Связь заявки и разрешенной страны гражданства'
-        verbose_name_plural = 'Связи заявки и разрешенной страны гражданства'
-
-    def __str__(self):
-        return f'заявка {self.bid} -> {self.country}'
-
-
-class BidEmployeeCategory(models.Model):
-    """Модель связи заявки и дополнительной категории граждан."""
-
-    bid = models.ForeignKey(
-        Bid,
-        on_delete=CASCADE,
-        verbose_name='ID заявки',
-    )
-    employee_category = models.ForeignKey(
-        EmployeeCategory,
-        on_delete=CASCADE,
-        verbose_name='ID категории граждан',
-    )
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['bid', 'employee_category'],
-                name='bid_employee_category'
-            )
-        ]
-        verbose_name = 'Связь заявки и разрешенной страны гражданства'
-        verbose_name_plural = 'Связи заявки и разрешенной страны гражданства'
-
-    def __str__(self):
-        return f'заявка {self.bid} -> {self.employee_category}'
-
-
-class BidEmployeeSkill(models.Model):
-    """Модель связи заявки и навыка соискателя."""
-
-    bid = models.ForeignKey(
-        Bid,
-        on_delete=CASCADE,
-        verbose_name='ID заявки',
-    )
-    employee_skill = models.ForeignKey(
-        EmployeeSkill,
-        on_delete=CASCADE,
-        verbose_name='ID навыка',
-    )
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['bid', 'employee_skill'],
-                name='bid_employee_skill'
-            )
-        ]
-        verbose_name = 'Связь заявки и навыка соискателя'
-        verbose_name_plural = 'Связи заявки и навыка соискателя'
-
-    def __str__(self):
-        return f'заявка {self.bid} -> {self.employee_skill}'
-
-
-class BidEmployeeAddSkill(models.Model):
-    """Модель связи заявки и дополнительного навыка соискателя."""
-
-    bid = models.ForeignKey(
-        Bid,
-        on_delete=CASCADE,
-        verbose_name='ID заявки',
-    )
-    employee_add_skill = models.ForeignKey(
-        EmployeeAddSkill,
-        on_delete=CASCADE,
-        verbose_name='ID дополнительного навыка',
-    )
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['bid', 'employee_add_skill'],
-                name='bid_employee_add_skill'
-            )
-        ]
-        verbose_name = 'Связь заявки и доп. навыка соискателя'
-        verbose_name_plural = 'Связи заявки и доп. навыка соискателя'
-
-    def __str__(self):
-        return f'заявка {self.bid} -> {self.employee_add_skill}'
-
-
-class BidRecruiterTask(models.Model):
-    """Модель связи заявки и задачи рекрутера."""
-
-    bid = models.ForeignKey(
-        Bid,
-        on_delete=CASCADE,
-        verbose_name='ID заявки',
-    )
-    recruiter_task = models.ForeignKey(
-        RecruiterTask,
-        on_delete=CASCADE,
-        verbose_name='ID задачи рекрутера',
-    )
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['bid', 'recruiter_task'],
-                name='bid_recruiter_task'
-            )
-        ]
-        verbose_name = 'Связь заявки и задачи рекрутера'
-        verbose_name_plural = 'Связи заявки и задачи рекрутера'
-
-    def __str__(self):
-        return f'заявка {self.bid} -> {self.recruiter_task}'
 
 
 class RecruiterToBid(models.Model):
@@ -610,6 +417,7 @@ class RecruiterToBid(models.Model):
         Bid,
         on_delete=CASCADE,
         verbose_name='ID заявки',
+        related_name='recruitertobid',
     )
     status = models.CharField(max_length=16,
                               choices=STATUS_RECRUITER,
@@ -644,6 +452,7 @@ class RecruiterToBidAddedResume(models.Model):
     recruiter_to_bid = models.ForeignKey(
         RecruiterToBid,
         on_delete=CASCADE,
+        related_name='cvtorecruiter',
         verbose_name='ID связи заявки и рекрутера',
     )
     file = models.FileField(
@@ -656,14 +465,16 @@ class RecruiterToBidAddedResume(models.Model):
         blank=True,
         verbose_name='Комментарий к резюме'
     )
-    accepted_at = models.DateTimeField()
+    accepted_at = models.DateTimeField(
+        verbose_name='Кандидат одобрен',
+        null=True, blank=True,)
     status = models.CharField(max_length=16,
                               choices=STATUS_RESUME,
                               default=NEW)
 
     class Meta:
-        verbose_name = 'Связь заявки и рекрутера'
-        verbose_name_plural = 'Связи заявки и рекрутера'
+        verbose_name = 'Добавленные к заявке кандидаты'
+        verbose_name_plural = 'Добавленные к заявке кандидаты'
 
     def __str__(self):
         return f'резюме к {self.recruiter_to_bid}'

@@ -21,7 +21,8 @@ ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8899',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'https://hrspace.hopto.org/'
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
