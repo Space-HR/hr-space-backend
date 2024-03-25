@@ -1,78 +1,28 @@
-# from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from bids.models import (  # City, Country,; EducationsOption, EmployeeAddSkill,; EmployeeCategory,; EmployeeSkill, ExperienceOption, JobVacancy,; RecruiterTask, RegisterAsOption,; ScheduleOption, Sphere, TariffOption, WorkFormat,; BidWorkFormat,
-    Bid, BidCountry, BidEmployeeAddSkill, BidEmployeeCategory,
-    BidEmployeeSkill, BidRecruiterTask, BidRegisterAs, RecruiterToBid,
-    RecruiterToBidAddedResume)
+from bids.models import (
+    RecruiterToBid, Bid,
+    RecruiterToBidAddedResume,
+    EmployeeAddSkill,
+    )
 
-from .serializers_users import \
-    RecruiterSerializer  # CustomUserSerializer,; CustomUserCreateSerializer,; EmployerSerializer,; RecruiterGetSerializer,
-
-# from users.models import CustomUser, Employer, Recruiter
-
-
-# from .serializers_bid_data import (
-#                           CitySerializer, CountrySerializer,
-#                           EducationsOptionSerializer,
-#                           EmployeeAddSkillSerializer,
-#                           EmployeeCategorySerializer,
-#                           EmployeeSkillSerializer,
-#                           ExperienceOptionSerializer,
-#                           JobVacancySerializer,
-#                           RecruiterTaskSerializer,
-#                           RegisterAsOptionSerializer,
-#                           ScheduleOptionSerializer, SphereSerializer,
-#                           TariffOptionSerializer, WorkFormatSerializer,
-#                         )
-# User = get_user_model()
-
-class BidRegisterAsSerializer(serializers.ModelSerializer):
-    """Сериализатор для добавления способов оформления в заявку."""
-
-    class Meta:
-        model = BidRegisterAs
-        fields = '__all__'
-
-
-class BidEmployeeCategorySerializer(serializers.ModelSerializer):
-    """Сериализатор для добавления в заявку категорий людей
-    (студенты, инвалиды и пр)."""
-
-    class Meta:
-        model = BidEmployeeCategory
-        fields = '__all__'
-
-
-class BidCountrySerializer(serializers.ModelSerializer):
-    """Сериализатор для добавления стран в заявку."""
-
-    class Meta:
-        model = BidCountry
-        fields = '__all__'
-
-
-class BidEmployeeSkillSerializer(serializers.ModelSerializer):
-    """Сериализатор для добавления требований в заявку."""
-
-    class Meta:
-        model = BidEmployeeSkill
-        fields = '__all__'
-
-
-class BidEmployeeAddSkillSerializer(serializers.ModelSerializer):
-    """Сериализатор для добавления обязанностей в заявку."""
-
-    class Meta:
-        model = BidEmployeeAddSkill
-        fields = '__all__'
+from .serializers_users import RecruiterSerializer, EmployerSerializer
+from .serializers_bid_data import EmployeeAddSkillSerializer
 
 
 class RecruiterToBidAddedResumeSerializer(serializers.ModelSerializer):
-    """Кандидаты, направленные рекрутером."""
+    """Просмотр кандидатов, прикрепленных к заявке."""
 
-    recruiter_to_bid = serializers.SlugRelatedField(
-        read_only=True, slug_field='id')
+    recruiter_to_bid = serializers.IntegerField(source='recruiter_to_bid.id')
+
+    class Meta:
+        fields = ('id', 'recruiter_to_bid',
+                  'file', 'comment', 'accepted_at', 'status',)
+        model = RecruiterToBidAddedResume
+
+
+class RecruiterToBidAddedResumeSerializer(serializers.ModelSerializer):
+    """Прикрепление рекрутера к заявке."""
 
     class Meta:
         fields = ('id', 'recruiter_to_bid',
@@ -81,26 +31,106 @@ class RecruiterToBidAddedResumeSerializer(serializers.ModelSerializer):
 
 
 class RecruiterToBidSerializer(serializers.ModelSerializer):
-    """Рекрутеры, связанные с заявкой."""
+    """Просмотр рекрутеров, связанных с заявкой."""
+
     recruiter = RecruiterSerializer()
+    bid = serializers.SlugRelatedField(
+        read_only=True, slug_field='title')
+    candidates = RecruiterToBidAddedResumeSerializer(
+        many=True,
+        read_only=True,
+        source='cvtorecruiter')
+
+    class Meta:
+        fields = ('id', 'recruiter', 'bid',
+                  'status', 'candidates')
+        model = RecruiterToBid
+
+
+class RecruiterToBidCreateSerializer(serializers.ModelSerializer):
+    """Присоединение рекрутера к заявке."""
+    recruiter = serializers.IntegerField(source='recruiter.id')
     bid = serializers.SlugRelatedField(
         read_only=True, slug_field='title')
 
     class Meta:
-        fields = ('id', 'recruiter', 'bid', 'status',)
+        fields = ('id', 'recruiter', 'bid',
+                  'status', )
         model = RecruiterToBid
 
 
-class BidRecruiterTaskSerializer(serializers.ModelSerializer):
-    """Привязанные к заявке задачи рекрутера."""
-
-    class Meta:
-        fields = ('id', 'bid', 'recruiter_task',)
-        model = BidRecruiterTask
-
-
 class BidGetSerializer(serializers.ModelSerializer):
-    """Cериализатор для просмотра заявок."""
+    """Cериализатор для просмотра заявок. Получение
+    полной информации по всем полям(вместе с рекрутерами
+    и направленными на рассмотрение кандидатами)."""
+
+    employer = EmployerSerializer()
+    job_vacancy = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name'
+    )
+    sphere = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name'
+    )
+    schedule = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name'
+    )
+    work_formats = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name',
+        many=True
+    )
+    register_as_set = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name',
+        many=True
+    ) 
+    city = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name'
+    )
+    employee_categories = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name',
+        many=True
+    )
+    foreign_countries = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name',
+        many=True
+    )
+    employee_experience = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name'
+    )
+    employee_education = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name'
+    )
+    employee_skills = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name',
+        many=True
+    )
+    employee_add_skills = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name',
+        many=True
+    )
+    tariff = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name'
+    )
+    recruiter_tasks = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name',
+        many=True
+    )
+    recruiters = RecruiterToBidSerializer(many=True,
+                                          read_only=True,
+                                          source='recruitertobid')
 
     class Meta:
         model = Bid
@@ -120,11 +150,15 @@ class BidGetSerializer(serializers.ModelSerializer):
                   'recruiter_tasks', 'resume_after_interview',
                   'not_private_person', 'skills_recruiter', 'stop_list',
                   'created_at', 'closed_at', 'status',
+                  'recruiters',
                   )
 
 
 class BidChangeSerializer(serializers.ModelSerializer):
     """Cериализатор для создания и редактирования заявок."""
+
+    # employee_add_skills = EmployeeAddSkillSerializer(many=True)
+
     class Meta:
         model = Bid
         fields = ('id', 'employer', 'title',
