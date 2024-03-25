@@ -131,10 +131,11 @@ class EmployeeSkillViewSet(viewsets.ReadOnlyModelViewSet):
     ordering_fields = ('name', 'id',)
 
 
-class EmployeeAddSkillViewSet(viewsets.ReadOnlyModelViewSet):
+class EmployeeAddSkillViewSet(viewsets.ModelViewSet):
     """Навыки."""
     queryset = EmployeeAddSkill.objects.all()
     serializer_class = EmployeeAddSkillSerializer
+    http_method_names = ['get', 'post']
     permission_classes = (AllowAny,)
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('^name',)

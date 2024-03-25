@@ -5,10 +5,6 @@ from .models import (Bid, City,
                      EmployeeCategory, EmployeeSkill, ExperienceOption,
                      JobVacancy, RecruiterTask, RegisterAsOption,
                      ScheduleOption, Sphere, TariffOption, WorkFormat,
-                    #  RecruiterToBid,
-                    #  RecruiterToBidAddedResume,
-                    #  BidCountry, BidEmployeeAddSkill, BidEmployeeCategory,
-                    #  BidEmployeeSkill, BidRecruiterTask, BidRegisterAs,
                      )
 
 
@@ -49,13 +45,4 @@ admin.site.register(EmployeeAddSkill, EmployeeAddSkillAdmin)
 admin.site.register(TariffOption, TariffOptionAdmin)
 admin.site.register(Country)
 admin.site.register(RecruiterTask)
-admin.site.register(Bid)
-
-# admin.site.register(RecruiterToBid)
-# admin.site.register(RecruiterToBidAddedResume)
-# admin.site.register(BidRegisterAs)
-# admin.site.register(BidCountry)
-# admin.site.register(BidEmployeeCategory)
-# admin.site.register(BidEmployeeSkill)
-# admin.site.register(BidEmployeeAddSkill)
-# admin.site.register(BidRecruiterTask)
+admin.site.register(Bid, BidAdmin)
