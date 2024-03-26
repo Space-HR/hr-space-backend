@@ -9,6 +9,44 @@ HRSpace - маркетплейс частных рекрутеров и кадр
 
 ## Возможности проета:
 
+
+## Что сделано:
+
+1. Созданы справочники и заполнены данными:
+
+JobVacancy 
+Sphere 
+City 
+ScheduleOption 
+WorkFormat 
+RegisterAsOption 
+Country 
+EmployeeCategory 
+ExperienceOption 
+EducationsOption
+EmployeeSkill +
+EmployeeAddSkill(данных нет)
+TariffOption +
+RecruiterTask +
+
+2. Заявка Bid
+
+3 Пользователи
+
+Василий Пупкин
+vasya
+zxc102938
+
+
+Джо Блэк
+joe
+mko091122
+
+admin
+111111
+
+3.
+
 ## Запуск:
 
 #### Загрузка словарей в базу данных:
@@ -16,6 +54,58 @@ HRSpace - маркетплейс частных рекрутеров и кадр
 ```bash
 docker exec docker_wrapper-django-1 python manage.py load_dict
 ```
+# Запуск докер контейнеров для разработки проекта
+
+Необходимо склонировать инфраструктуру для запуска контейнеров:
+
+```
+git clone git@github.com:Space-HR/docker_wrapper.git
+```
+или
+```
+git clone https://github.com/Space-HR/docker_wrapper.git
+```
+
+## 1. В папку 'docker_wrapper' склонировать backend
+
+```
+git clone git@github.com:Space-HR/hr-space-backend.git -b development_backend hr-space-backend 
+```
+или
+```
+git clone https://github.com/Space-HR/hr-space-backend.git -b develop hr-space-frontend
+```
+
+## 2. В папку 'docker_wrapper' склонировать frontend
+
+```
+git clone git@github.com:Space-HR/hr-space-frontend.git -b develop hr-space-frontend
+```
+или
+```
+git clone https://github.com/Space-HR/hr-space-frontend.git -b development_backend hr-space-backend 
+```
+
+## 3.  Скопируйте все из файла .env.example в файл .env и актуализируйте данные по необходимости
+
+## 4. В папку 'docker_wrapper' запустить docker-compose.yml:
+
+```
+docker-compose up -d
+```
+
+## 5. Остановить:
+
+```
+docker-compose down
+```
+
+## 6. Пересобрать
+
+```
+docker-compose build --no-cache --pull
+```
+
 
 ## Технологии: 
 [![My Skills](https://skillicons.dev/icons?i=py,docker,postgres,django,nginx,)](https://skillicons.dev)
