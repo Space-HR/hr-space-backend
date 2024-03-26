@@ -13,7 +13,7 @@ from .serializers_bid import (BidChangeSerializer, BidGetSerializer,
 class RecruiterToBidViewSet(viewsets.ModelViewSet):
     """Рекрутеры, связанные с заявкой."""
     queryset = RecruiterToBid.objects.all()
-    http_method_names = ['get', 'post', 'patch',]  
+    http_method_names = ['get', 'post', 'patch',]
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
